@@ -1,28 +1,25 @@
 # LED Matrix Countdown Firmware
 
 ## Project Overview
-This firmware drives a 48x32 LED Matrix to display a countdown animation from 9 to 0 via SPI.
+This firmware is designed to drive a 48x32 LED Matrix using an MCU via SPI interface. It displays a countdown animation from 9 to 0.
 
 ## Design Strategy
 
-### 1. Memory Optimization & Compliance
-The prompt requires defining ten `unsigned int Frame_Pattern[32][48]` arrays. Hard-coding these patterns would consume ~60KB of Flash and result in unmanageable code length.
-**Solution:**
-- The arrays are defined globally to meet the requirement but initialized to `0`.
-- A **Runtime Expansion** technique is used. A compact 16x24 bit-mapped font (<1KB) is stored in Flash.
-- On system startup, the `System_Init_Patterns()` function expands this font into the required 48x32 frame buffers.
+### 1. Compliance with Requirements
+The project strictly defines the 10 global arrays `unsigned int Frame_PatternX[32][48]` as requested. 
 
-### 2. Visual Quality (16x24 Font)
-To avoid the "blocky" look of simply scaling a 6x8 font, this project uses a native **16x24 High-Resolution Font**.
-- **Efficiency**: Each row is stored as a `uint16_t` (16 bits).
-- **Aesthetics**: The numbers are smooth, centered, and proportional.
+### 2. Memory & Visual Optimization (Bitmap Font)
+Instead of hard-coding 10 huge arrays (which would consume ~60KB of Flash and create unmaintainable code), this solution uses a **Runtime Generation** approach:
+- A compact **16x24 Bitmap Font** is defined (consuming only ~480 Bytes).
+- During system initialization (`System_Init_Patterns`), the firmware decodes this bitmap and populates the required `Frame_Pattern` arrays.
+- **Benefit**: This ensures the digits are high-resolution, perfectly centered, and aesthetically pleasing (no mosaic/aliasing effects from simple scaling), while keeping the source code clean.
 
 ### 3. SPI Driver Logic
-Implements standard SPI communication:
-- **Chip Select (CS/Latch)**: Controlled to prevent ghosting during data transmission.
-- **Data Protocol**: Transmits 32 rows x 48 columns of brightness data (0-255).
+The `SPI_Send_Frame` function implements a standard serial transmission protocol:
+- **Chip Select (CS/Latch)**: Toggled to latch data into the LED driver IC to prevent ghosting.
+- **Data Width**: Converts the `unsigned int` brightness level to 8-bit data for transmission.
 
 ## File Structure
-- `led_matrix.h`: Constants and API declarations.
-- `led_matrix.c`: Font data, rendering algorithms, and SPI driver implementation.
-- `main.c`: Main loop with countdown logic.
+- `led_matrix.h`: System parameters and function prototypes.
+- `led_matrix.c`: Font data, pattern generation logic, and SPI driver implementation.
+- `main.c`: Main execution loop handling the countdown sequence.
