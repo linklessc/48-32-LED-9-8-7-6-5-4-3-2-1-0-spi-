@@ -3,22 +3,24 @@
 
 #include <stdint.h>
 
-/* Hardware Configuration */
+/* =============================================
+ * System Configuration
+ * ============================================= */
 #define MATRIX_WIDTH  48
 #define MATRIX_HEIGHT 32
 
-/* LED Brightness Settings (0~255) */
+/* LED Brightness Levels (0 to 255) */
 #define LED_ON        255
 #define LED_OFF       0
 
-/* Font Settings (High-Res 16x24) */
+/* Font Dimensions (High Resolution 16x24) */
 #define FONT_W 16
 #define FONT_H 24
 
-/* * Global Frame Buffers
- * Declared extern to be accessible from main.c
- * Strictly follows the format required by the prompt.
- */
+/* =============================================
+ * Global Frame Buffers
+ * (Strictly following the specific variable naming)
+ * ============================================= */
 extern unsigned int Frame_Pattern0[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern1[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern2[MATRIX_HEIGHT][MATRIX_WIDTH];
@@ -30,9 +32,26 @@ extern unsigned int Frame_Pattern7[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern8[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern9[MATRIX_HEIGHT][MATRIX_WIDTH];
 
-/* Function Prototypes */
+/* =============================================
+ * Function Prototypes
+ * ============================================= */
+
+/**
+ * @brief Initialize all frame patterns by expanding the bitmap font.
+ * Must be called once before the main loop.
+ */
 void System_Init_Patterns(void);
+
+/**
+ * @brief Send a full frame to the LED driver via SPI.
+ * @param frame Pointer to the 32x48 frame buffer.
+ */
 void SPI_Send_Frame(unsigned int frame[MATRIX_HEIGHT][MATRIX_WIDTH]);
+
+/**
+ * @brief Simple software delay.
+ * @param ms Milliseconds to wait.
+ */
 void Delay_ms(unsigned int ms);
 
 #endif // LED_MATRIX_H
