@@ -3,17 +3,22 @@
 
 #include <stdint.h>
 
-/* 硬體參數 */
+/* Hardware Configuration */
 #define MATRIX_WIDTH  48
 #define MATRIX_HEIGHT 32
+
+/* LED Brightness Settings (0~255) */
 #define LED_ON        255
 #define LED_OFF       0
 
-/* 定義字庫大小 (使用 16x24 字型，顯示效果遠優於 6x8) */
+/* Font Settings (High-Res 16x24) */
 #define FONT_W 16
 #define FONT_H 24
 
-/* 題目要求的 10 組 Frame Pattern (全域變數) */
+/* * Global Frame Buffers
+ * Declared extern to be accessible from main.c
+ * Strictly follows the format required by the prompt.
+ */
 extern unsigned int Frame_Pattern0[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern1[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern2[MATRIX_HEIGHT][MATRIX_WIDTH];
@@ -25,7 +30,7 @@ extern unsigned int Frame_Pattern7[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern8[MATRIX_HEIGHT][MATRIX_WIDTH];
 extern unsigned int Frame_Pattern9[MATRIX_HEIGHT][MATRIX_WIDTH];
 
-/* API 宣告 */
+/* Function Prototypes */
 void System_Init_Patterns(void);
 void SPI_Send_Frame(unsigned int frame[MATRIX_HEIGHT][MATRIX_WIDTH]);
 void Delay_ms(unsigned int ms);
