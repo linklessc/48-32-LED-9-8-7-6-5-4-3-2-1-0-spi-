@@ -9,23 +9,25 @@
 #define LED_ON        255
 #define LED_OFF       0
 
-/* * 宣告題目要求的 10 組 Frame Pattern 
- * 使用 extern 讓 main 可以存取
- */
-extern unsigned int Frame_Pattern0[32][48];
-extern unsigned int Frame_Pattern1[32][48];
-extern unsigned int Frame_Pattern2[32][48];
-extern unsigned int Frame_Pattern3[32][48];
-extern unsigned int Frame_Pattern4[32][48];
-extern unsigned int Frame_Pattern5[32][48];
-extern unsigned int Frame_Pattern6[32][48];
-extern unsigned int Frame_Pattern7[32][48];
-extern unsigned int Frame_Pattern8[32][48];
-extern unsigned int Frame_Pattern9[32][48];
+/* 定義字庫大小 (使用 16x24 字型，顯示效果遠優於 6x8) */
+#define FONT_W 16
+#define FONT_H 24
 
-/* 功能函式 */
-void Matrix_System_Init(void); // 初始化並生成圖案
-void SPI_Send_Frame(unsigned int frame[32][48]);
+/* 題目要求的 10 組 Frame Pattern (全域變數) */
+extern unsigned int Frame_Pattern0[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern1[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern2[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern3[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern4[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern5[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern6[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern7[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern8[MATRIX_HEIGHT][MATRIX_WIDTH];
+extern unsigned int Frame_Pattern9[MATRIX_HEIGHT][MATRIX_WIDTH];
+
+/* API 宣告 */
+void System_Init_Patterns(void);
+void SPI_Send_Frame(unsigned int frame[MATRIX_HEIGHT][MATRIX_WIDTH]);
 void Delay_ms(unsigned int ms);
 
 #endif // LED_MATRIX_H
